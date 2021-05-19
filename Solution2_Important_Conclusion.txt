@@ -1,0 +1,71 @@
+/* 	Author: Mladen Vidic
+	E-mail: mladen.vidic@gmail.com
+	
+	Date Signed: 12.5.2021.
+	Scope:  	Final conclusion and suggestions for usage of the APIs and DDL triggers.
+			Demo solution for cascade delete and update triggers for semi-automatic and ddl trigger-driven automatic creation/update
+			of CASCADE DELETE and CASCADE UPDATE triggers with single column constraints or comma 
+			separated list of columns in constraint.
+	
+	Location: Belgrade, Serbia; Doboj, Bosnia and Herzegovina.
+	LICENCE: The licensing rules from the 'license.txt' or '..\license.txt' file apply to this file, solution and its parts.
+
+	CONCLUSION:
+	This solution 2 supports creating and dropping triggers for cascade delete or/and cascade update after adding or dropping 
+	foreign (referential) constraint. It means that even in the package exists API procedures for creating triggers based on on or a list of columns,
+	in Solution2 version 2 are demonstrated usages of these APIs manually.
+	But in version 3 of the solution 2 are developed 2 pathways to implement DDL triggers over schema that call those APIS automatically of TABLE 
+	object after CREATE or ALTER DDL commands.
+	
+	In a brief description,  
+		
+		If an user creates referential constraint in some schema then in version 2 user can manually, or in version 3 DDL trigger automatically	on that schema will, 
+		create delete cascade or/and update cascade triggers. There are flags to choose witch type of triggers will be created.
+		
+		If an user drops referential constraint in some schema then DDL trigger automatically or user manually
+		on that schema will drop existing delete cascade and update cascade triggers.
+		
+	Of course, API procedures in related package can do create or drop triggers manually by sending the lists of columns in 
+	comma separated string list of the basic table and dependant table.
+
+	ATTENTION for suing UPDATE CASCADE mechanism!
+	 
+	Don't easily use these triggers without attention of RDBMS vendor's solution for options
+	ON DELETE CASCADE  and ON UPDATE CASCADE in SQL DDL language. Referential constraints by
+	default support ON DELETE RESTRICT and ON UPDATE RESTRICT
+	in SQL command 
+
+	alter table <schema1>.<details_table_name> add constraint <fk_constraint_name> foreign key (<column_comm_string_list2>)
+	references <schema2>.<parent_table_name> (<column_comm_string_list2>) [[ON DELETE RESTRICT|CASCADE|SET NULL]|[ON UPDATE RESTRICT]];
+
+	It is not without intention that some RDBMES vendors has not included ON UPDATE CASCADE. 
+	Option ON UPDATE CASCADE is very danger even I have proved bz previous triggers that is possible to implement this functionality.
+
+	For explanation:
+	ON DELETE RESTRICT  and ON UPDATE RESTRICT are usual options in all SQL standard compliant RDBMSs and represents ordinary behaviour of declarative 
+	mechanism to control referential integrity in database, relation between two tables or one table to itself. 
+
+	ON DELETE CASCADE option is good option for cleansing database of not needed data and its dependant data in details tables. 
+	It is possible to approve deleting basic data and their dependant data in referentially connected tables.
+
+	However, option ON UPDATE CASCADE is very danger option (Oracle hasn't implemented this option as standard behaviour). It 
+	can be used in specific circumstances, when we have to tidying up the database and bring impure data to regular condition.
+	It is usually when we need to migrate some old fashioned information system to new that was introduced new data identifiers.
+
+	But the question is whether it needs a trigger. Maybe Yes, because it is the fastest way to update data identifiers through schemas of tables,
+	through their relations.
+
+	The permanent existence of such a mechanism, using such triggers is very controversial because it indicates that the database model is poorly designed
+	and that there was a problem in the normalization of the database schema because the designer predicted that in some table
+	Candidates for the table key include columns that can mutate the flow of the database system. That's not a good way to
+	selection of table keys, because the principles of modelling and creating a 3NF (3rd normal database schema form) 
+	scheme database are violated. 
+
+	Author: Mladen Vidic
+			mladen.vidic@gmail.com
+*/
+
+
+
+	
+	
